@@ -51,7 +51,7 @@ public class EtatMisEnExamen {
         return Days.daysBetween(referenceDate, getDateProchaineEcheance()).getDays();
     }
 
-    public DateMidnight getDateDernierRenouvellement() {
+    public DateMidnight getDateDerniereProlongation() {
         if (this.renouvellements.size() < 2) {
             return null;
         }

@@ -21,7 +21,7 @@ public class ZonZon {
         cabinet.charge("Donnees Brutes.xlsx", DateMidnight.now());
 
         String html = new HtmlExporter().export(cabinet);
-        saveTo(html, "Tableau Alertes.html");
+        saveTo(html, "data.html");
     }
 
 }

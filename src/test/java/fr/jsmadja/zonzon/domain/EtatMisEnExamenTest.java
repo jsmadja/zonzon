@@ -1,7 +1,5 @@
 package fr.jsmadja.zonzon.domain;
 
-import fr.jsmadja.zonzon.domain.EtatMisEnExamen;
-import fr.jsmadja.zonzon.domain.Nature;
 import org.joda.time.DateMidnight;
 import org.junit.Test;
 
@@ -15,7 +13,7 @@ public class EtatMisEnExamenTest {
         assertEquals(DateMidnight.parse("2018-05-01"), etat.getDateProchaineEcheance());
         assertEquals(30, etat.getDelaiAvantEcheanceMandatDepot());
         assertEquals(0, etat.getNombreProlongations());
-        assertEquals(null, etat.getDateDernierRenouvellement());
+        assertEquals(null, etat.getDateDerniereProlongation());
     }
 }
 

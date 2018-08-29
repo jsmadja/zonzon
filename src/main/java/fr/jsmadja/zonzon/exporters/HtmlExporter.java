@@ -32,7 +32,7 @@ public class HtmlExporter {
                 "<td class=\"right aligned\">" + etat.getDossier() + "</td>\n" +
                 "<td>" + etat.getNature() + "</td>\n" +
                 "<td>" + Dates.formatDate(etat.getDateMandatDepotInitiale()) + "</td>\n" +
-                "<td>" + Dates.formatDate(etat.getDateDernierRenouvellement()) + "</td>\n" +
+                "<td>" + Dates.formatDate(etat.getDateDerniereProlongation()) + "</td>\n" +
                 "<td>" + etat.getNombreProlongations() + "</td>\n" +
                 "<td><strong>" + Dates.formatDate(etat.getDateProchaineEcheance()) + "</strong></td>\n" +
                 "<td><strong>" + etat.getDelaiAvantEcheanceMandatDepot() + " jours</strong></td>\n" +
