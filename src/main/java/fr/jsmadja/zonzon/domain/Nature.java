@@ -1,4 +1,4 @@
-package fr.jsmadja.zonzon;
+package fr.jsmadja.zonzon.domain;
 
 public enum Nature {
     Criminel,

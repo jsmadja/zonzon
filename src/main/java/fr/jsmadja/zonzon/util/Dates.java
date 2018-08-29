@@ -1,19 +1,19 @@
-package fr.jsmadja.zonzon;
+package fr.jsmadja.zonzon.util;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.joda.time.DateMidnight;
 import org.joda.time.format.DateTimeFormat;
 
-class Dates {
-    static String formatDate(DateMidnight date) {
+public class Dates {
+    public static String formatDate(DateMidnight date) {
         if (date == null) {
             return "";
         }
         return DateTimeFormat.forPattern("dd/MM/YY").print(date);
     }
 
-    static DateMidnight toDate(Cell cell) {
+    public static DateMidnight toDate(Cell cell) {
         if (cell == null) {
             return null;
         }

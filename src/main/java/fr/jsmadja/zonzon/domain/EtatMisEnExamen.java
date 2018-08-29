@@ -1,4 +1,4 @@
-package fr.jsmadja.zonzon;
+package fr.jsmadja.zonzon.domain;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
@@ -6,10 +6,13 @@ import com.google.common.collect.Lists;
 import org.joda.time.DateMidnight;
 import org.joda.time.Days;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class EtatMisEnExamen {
+
+    private static final int SEUIL_PRIORITE_1 = 36;
+    private static final int SEUIL_PRIORITE_2 = 67;
+
     private final String dossier;
     private final String nom;
     private final Nature nature;
@@ -31,30 +34,25 @@ public class EtatMisEnExamen {
         this.renouvellements = this.calculeRenouvellements();
     }
 
-    int getNombreProlongations() {
+    public int getNombreProlongations() {
         return FluentIterable.from(this.renouvellements).filter(new Predicate<DateMidnight>() {
             @Override
-            public boolean apply(@Nullable DateMidnight dateMidnight) {
-                return this.test(dateMidnight);
-            }
-
-            @Override
-            public boolean test(DateMidnight r) {
+            public boolean apply(DateMidnight r) {
                 return r.isBefore(EtatMisEnExamen.this.referenceDate);
             }
         }).size();
     }
 
-    DateMidnight getDateProchaineEcheance() {
+    public DateMidnight getDateProchaineEcheance() {
         return this.renouvellements.get(this.renouvellements.size() - 1);
     }
 
-    int getDelaiAvantEcheanceMandatDepot() {
+    public int getDelaiAvantEcheanceMandatDepot() {
         return Days.daysBetween(referenceDate, getDateProchaineEcheance()).getDays();
     }
 
-    DateMidnight getDateDernierRenouvellement() {
-        if(this.renouvellements.size() < 2) {
+    public DateMidnight getDateDernierRenouvellement() {
+        if (this.renouvellements.size() < 2) {
             return null;
         }
         return this.renouvellements.get(this.renouvellements.size() - 2);
@@ -73,7 +71,7 @@ public class EtatMisEnExamen {
         return renouvellements;
     }
 
-    List<DateMidnight> getRenouvellements() {
+    public List<DateMidnight> getRenouvellements() {
         return this.renouvellements;
     }
 
@@ -89,11 +87,11 @@ public class EtatMisEnExamen {
         return etat.isDelictuel() ? dateProchaineEcheance.plusMonths(4) : dateProchaineEcheance.plusMonths(6);
     }
 
-    String getNom() {
+    public String getNom() {
         return this.nom;
     }
 
-    String getDossier() {
+    public String getDossier() {
         return this.dossier;
     }
 
@@ -101,8 +99,20 @@ public class EtatMisEnExamen {
         return this.nature;
     }
 
-    DateMidnight getDateMandatDepotInitiale() {
+    public DateMidnight getDateMandatDepotInitiale() {
         return this.dateMandatDepotInitiale;
     }
 
+    boolean aPriorite(Priorite priorite) {
+        switch (priorite) {
+            case P1:
+                return this.getDelaiAvantEcheanceMandatDepot() < SEUIL_PRIORITE_1;
+            case P2:
+                return this.getDelaiAvantEcheanceMandatDepot() >= SEUIL_PRIORITE_1 && this.getDelaiAvantEcheanceMandatDepot() < SEUIL_PRIORITE_2;
+            case P3:
+                return this.getDelaiAvantEcheanceMandatDepot() >= SEUIL_PRIORITE_2;
+            default:
+                return true;
+        }
+    }
 }

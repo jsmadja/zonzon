@@ -1,5 +1,7 @@
-package fr.jsmadja.zonzon;
+package fr.jsmadja.zonzon.domain;
 
+import fr.jsmadja.zonzon.domain.EtatMisEnExamen;
+import fr.jsmadja.zonzon.domain.Nature;
 import org.joda.time.DateMidnight;
 import org.junit.Test;
 
