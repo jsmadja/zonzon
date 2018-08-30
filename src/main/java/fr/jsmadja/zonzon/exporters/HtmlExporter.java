@@ -35,7 +35,7 @@ public class HtmlExporter {
                 "<td>" + Dates.formatDate(etat.getDateDerniereProlongation()) + "</td>\n" +
                 "<td>" + etat.getNombreProlongations() + "</td>\n" +
                 "<td><strong>" + Dates.formatDate(etat.getDateProchaineEcheance()) + "</strong></td>\n" +
-                "<td><strong>" + etat.getDelaiAvantEcheanceMandatDepot() + " jours</strong></td>\n" +
+                "<td><strong>" + Dates.formatDelai(etat.getDateProchaineEcheance()) + "</strong></td>\n" +
                 "<td style=\"display: " + DISPLAY + ";\">" + renouvellements + "</td>\n" +
                 "</tr>\n";
     }
