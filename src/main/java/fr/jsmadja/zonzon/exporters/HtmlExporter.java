@@ -28,14 +28,14 @@ public class HtmlExporter {
                 })
                 .join(on("<br/>"));
         return "<tr class=\"" + className + "\">\n" +
-                "<td class=\"left aligned\">" + etat.getNom() + "</td>\n" +
-                "<td class=\"right aligned\">" + etat.getDossier() + "</td>\n" +
+                "<td>" + etat.getNom() + "</td>\n" +
+                "<td>" + etat.getDossier() + "</td>\n" +
                 "<td>" + etat.getNature() + "</td>\n" +
                 "<td>" + Dates.formatDate(etat.getDateMandatDepotInitiale()) + "</td>\n" +
                 "<td>" + Dates.formatDate(etat.getDateDerniereProlongation()) + "</td>\n" +
                 "<td>" + etat.getNombreProlongations() + "</td>\n" +
-                "<td><strong>" + Dates.formatDate(etat.getDateProchaineEcheance()) + "</strong></td>\n" +
-                "<td><strong>" + Dates.formatDelai(etat.getDateProchaineEcheance()) + "</strong></td>\n" +
+                "<td><strong>" + Dates.formatDate(etat.getDateEcheanceMD()) + "</strong></td>\n" +
+                "<td><strong>" + Dates.formatDelai(etat.getDateEcheanceMD()) + "</strong></td>\n" +
                 "<td style=\"display: " + DISPLAY + ";\">" + renouvellements + "</td>\n" +
                 "</tr>\n";
     }

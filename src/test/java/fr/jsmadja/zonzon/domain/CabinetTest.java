@@ -1,8 +1,6 @@
 package fr.jsmadja.zonzon.domain;
 
 import com.google.common.base.Function;
-import com.google.common.collect.FluentIterable;
-import com.google.common.collect.Lists;
 import fr.jsmadja.zonzon.util.Dates;
 import org.joda.time.DateMidnight;
 import org.junit.Test;
@@ -24,7 +22,7 @@ public class CabinetTest {
                 from(etatsMisEnExamenP1).transform(new Function<EtatMisEnExamen, String>() {
                     @Override
                     public String apply(EtatMisEnExamen etatMisEnExamen) {
-                        return Dates.formatDate(etatMisEnExamen.getDateProchaineEcheance());
+                        return Dates.formatDate(etatMisEnExamen.getDateEcheanceMD());
                     }
                 }).toList());
     }

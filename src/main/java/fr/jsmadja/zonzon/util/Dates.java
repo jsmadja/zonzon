@@ -1,5 +1,6 @@
 package fr.jsmadja.zonzon.util;
 
+import com.google.common.base.Joiner;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.joda.time.DateMidnight;
@@ -8,6 +9,7 @@ import org.ocpsoft.prettytime.Duration;
 import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.TimeUnit;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,14 +38,13 @@ public class Dates {
         PrettyTime p = new PrettyTime(new Locale("fr"));
         p.setReference(DateMidnight.now().toDate());
         List<Duration> durations = p.calculatePreciseDuration(date.toDate());
+
         String[] s = p.format(durations)
                 .replaceAll("dans", "")
                 .replaceAll("[0-9]+ heures", "")
                 .replaceAll("[0-9]+ minutes", "")
                 .trim()
                 .split(" ");
-        if (s.length > 4)
-            return String.format("%s %s %s %s", s[0], s[1], s[2], s[3]);
-        return s[0] + " " + s[1];
+        return Joiner.on(" ").join(s);
     }
 }

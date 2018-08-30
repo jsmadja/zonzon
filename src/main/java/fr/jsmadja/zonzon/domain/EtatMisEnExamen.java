@@ -43,12 +43,12 @@ public class EtatMisEnExamen {
         }).size();
     }
 
-    public DateMidnight getDateProchaineEcheance() {
+    public DateMidnight getDateEcheanceMD() {
         return this.renouvellements.get(this.renouvellements.size() - 1);
     }
 
     public int getDelaiAvantEcheanceMandatDepot() {
-        return Days.daysBetween(referenceDate, getDateProchaineEcheance()).getDays();
+        return Days.daysBetween(referenceDate, getDateEcheanceMD()).getDays();
     }
 
     public DateMidnight getDateDerniereProlongation() {
@@ -76,7 +76,7 @@ public class EtatMisEnExamen {
     }
 
     private Boolean isDelictuel() {
-        return this.nature == Nature.Delictuel;
+        return this.nature == Nature.Delictuelle;
     }
 
     private DateMidnight calculeDateProlongationInitiale(EtatMisEnExamen etat, DateMidnight dateProchaineEcheance) {

@@ -23,7 +23,7 @@ public class Cabinet {
         return new Predicate<Row>() {
             @Override
             public boolean apply(Row row) {
-                return row.getRowNum() > 0;
+                return row.getRowNum() > 0 && row.getCell(0) != null;
             }
         };
     }
