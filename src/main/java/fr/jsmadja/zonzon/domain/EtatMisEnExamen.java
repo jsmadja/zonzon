@@ -10,8 +10,8 @@ import java.util.List;
 
 public class EtatMisEnExamen {
 
-    private static final int SEUIL_PRIORITE_1 = 36;
-    private static final int SEUIL_PRIORITE_2 = 67;
+    private static final int SEUIL_PRIORITE_1 = 46;
+    private static final int SEUIL_PRIORITE_2 = 80;
 
     private final String dossier;
     private final String nom;
