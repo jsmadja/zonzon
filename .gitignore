@@ -5,7 +5,6 @@ semantic/tasks
 semantic/gulpfile.js
 tmp
 data.html
-data.xlsx
 *.iml
 .~lock*
 zonzon/
