@@ -7,7 +7,7 @@ import fr.jsmadja.zonzon.domain.Cabinet;
 import fr.jsmadja.zonzon.domain.EtatMisEnExamen;
 import fr.jsmadja.zonzon.domain.Priorite;
 import fr.jsmadja.zonzon.util.Dates;
-import org.joda.time.DateMidnight;
+import org.joda.time.LocalDate;
 
 import java.io.File;
 
@@ -21,8 +21,8 @@ public class HtmlExporter {
     static String toHtml(String className, EtatMisEnExamen etat) {
         String renouvellements = FluentIterable
                 .from(etat.getRenouvellements().subList(0, etat.getRenouvellements().size() - 1))
-                .transform(new Function<DateMidnight, String>() {
-                    public String apply(DateMidnight d) {
+                .transform(new Function<LocalDate, String>() {
+                    public String apply(LocalDate d) {
                         return Dates.formatDate(d);
                     }
                 })

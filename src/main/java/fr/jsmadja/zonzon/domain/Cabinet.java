@@ -8,7 +8,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.joda.time.DateMidnight;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDate;
 
 import java.io.File;
 import java.util.Comparator;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Cabinet {
 
     private List<EtatMisEnExamen> etatsMisEnExamen;
-    private DateMidnight referenceDate;
+    private LocalDate referenceDate;
 
     private static Predicate<Row> noHeader() {
         return new Predicate<Row>() {
@@ -28,7 +29,7 @@ public class Cabinet {
         };
     }
 
-    public void charge(String fichier, DateMidnight referenceDate) throws Exception {
+    public void charge(String fichier, LocalDate referenceDate) throws Exception {
         this.referenceDate = referenceDate;
         Workbook workbook = WorkbookFactory.create(new File(fichier));
         Sheet rows = workbook.getSheetAt(0);
@@ -39,8 +40,8 @@ public class Cabinet {
         String dossier = row.getCell(0).toString();
         String prevenu = row.getCell(1).getStringCellValue();
         Nature nature = Nature.parse(row.getCell(2).getStringCellValue());
-        DateMidnight dateMandatDepotInitiale = Dates.toDate(row.getCell(3));
-        DateMidnight dateDerniereGestionAlerte = Dates.toDate(row.getCell(4));
+        LocalDate dateMandatDepotInitiale = Dates.toDate(row.getCell(3));
+        LocalDate dateDerniereGestionAlerte = Dates.toDate(row.getCell(4));
         return new EtatMisEnExamen(dossier, prevenu, nature, dateMandatDepotInitiale, dateDerniereGestionAlerte, this.referenceDate);
     }
 
