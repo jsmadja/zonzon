@@ -10,8 +10,8 @@ import java.nio.charset.Charset;
 
 public class ZonZon {
 
-    private static void saveTo(String html, String dest) throws IOException {
-        FileOutputStream fos = new FileOutputStream(dest);
+    private static void saveTo(String html) throws IOException {
+        FileOutputStream fos = new FileOutputStream("data.html");
         fos.write(html.getBytes(Charset.defaultCharset()));
         fos.close();
     }
@@ -19,9 +19,8 @@ public class ZonZon {
     public static void main(String[] args) throws Exception {
         Cabinet cabinet = new Cabinet();
         cabinet.charge("Donnees Brutes.xlsx", LocalDate.now());
-
         String html = new HtmlExporter().export(cabinet);
-        saveTo(html, "data.html");
+        saveTo(html);
     }
 
 }

@@ -19,7 +19,7 @@ public class EtatMisEnExamen {
     private final LocalDate dateMandatDepotInitiale;
     private final LocalDate dateDerniereGestionAlerte;
     private final LocalDate referenceDate;
-    private final List<LocalDate> renouvellements;
+    private final List<Renouvellement> renouvellements;
 
     EtatMisEnExamen(String dossier, String nom, Nature nature, LocalDate dateMandatDepotInitiale, LocalDate dateDerniereGestionAlerte, LocalDate referenceDate) {
         if (referenceDate == null) {
@@ -35,19 +35,19 @@ public class EtatMisEnExamen {
     }
 
     public int getNombreProlongations() {
-        return FluentIterable.from(this.renouvellements).filter(new Predicate<LocalDate>() {
+        return FluentIterable.from(this.renouvellements).filter(new Predicate<Renouvellement>() {
             @Override
-            public boolean apply(LocalDate r) {
-                return r.isBefore(EtatMisEnExamen.this.referenceDate);
+            public boolean apply(Renouvellement r) {
+                return r.getDateEcheance().isBefore(EtatMisEnExamen.this.referenceDate);
             }
         }).size();
     }
 
     public LocalDate getDateEcheanceMD() {
-        return this.renouvellements.get(this.renouvellements.size() - 1);
+        return this.renouvellements.get(this.renouvellements.size() - 1).getDateEcheance();
     }
 
-    public int getDelaiAvantEcheanceMandatDepot() {
+    int getDelaiAvantEcheanceMandatDepot() {
         return Days.daysBetween(referenceDate, getDateEcheanceMD()).getDays();
     }
 
@@ -55,36 +55,32 @@ public class EtatMisEnExamen {
         if (this.renouvellements.size() < 2) {
             return null;
         }
-        return this.renouvellements.get(this.renouvellements.size() - 2);
+        return this.renouvellements.get(this.renouvellements.size() - 2).getDateEcheance();
     }
 
-    private List<LocalDate> calculeRenouvellements() {
-        List<LocalDate> renouvellements = Lists.newArrayList();
+    private List<Renouvellement> calculeRenouvellements() {
+        List<Renouvellement> renouvellements = Lists.newArrayList();
         LocalDate dateProchaineEcheance = calculeDateProlongationInitiale(this, this.dateMandatDepotInitiale);
-        renouvellements.add(new LocalDate(dateProchaineEcheance));
-        do {
+        Renouvellement renouvellement = new Renouvellement(dateProchaineEcheance, this.nature, true);
+        renouvellements.add(renouvellement);
+        while (renouvellement.aEteTraite(this.dateDerniereGestionAlerte)) {
             dateProchaineEcheance = calculeDateProlongation(this, dateProchaineEcheance);
-            if (this.dateDerniereGestionAlerte != null) {
-                renouvellements.add(new LocalDate(dateProchaineEcheance));
-            }
-        } while (dateProchaineEcheance.isBefore(this.referenceDate));
+            renouvellement = new Renouvellement(dateProchaineEcheance, this.nature, false);
+            renouvellements.add(renouvellement);
+        }
         return renouvellements;
     }
 
-    public List<LocalDate> getRenouvellements() {
+    public List<Renouvellement> getRenouvellements() {
         return this.renouvellements;
     }
 
-    private Boolean isDelictuel() {
-        return this.nature == Nature.Delictuelle;
-    }
-
     private LocalDate calculeDateProlongationInitiale(EtatMisEnExamen etat, LocalDate dateProchaineEcheance) {
-        return etat.isDelictuel() ? new LocalDate(dateProchaineEcheance).plusMonths(4) : new LocalDate(dateProchaineEcheance).plusMonths(12);
+        return new LocalDate(dateProchaineEcheance).plusMonths(this.nature.getDelaiProlongationInitiale());
     }
 
     private LocalDate calculeDateProlongation(EtatMisEnExamen etat, LocalDate dateProchaineEcheance) {
-        return etat.isDelictuel() ? dateProchaineEcheance.plusMonths(4) : dateProchaineEcheance.plusMonths(6);
+        return dateProchaineEcheance.plusMonths(this.nature.getDelaiProlongation());
     }
 
     public String getNom() {

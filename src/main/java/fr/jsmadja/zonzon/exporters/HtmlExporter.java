@@ -6,8 +6,8 @@ import com.google.common.io.Files;
 import fr.jsmadja.zonzon.domain.Cabinet;
 import fr.jsmadja.zonzon.domain.EtatMisEnExamen;
 import fr.jsmadja.zonzon.domain.Priorite;
+import fr.jsmadja.zonzon.domain.Renouvellement;
 import fr.jsmadja.zonzon.util.Dates;
-import org.joda.time.LocalDate;
 
 import java.io.File;
 
@@ -21,9 +21,9 @@ public class HtmlExporter {
     static String toHtml(String className, EtatMisEnExamen etat) {
         String renouvellements = FluentIterable
                 .from(etat.getRenouvellements().subList(0, etat.getRenouvellements().size() - 1))
-                .transform(new Function<LocalDate, String>() {
-                    public String apply(LocalDate d) {
-                        return Dates.formatDate(d);
+                .transform(new Function<Renouvellement, String>() {
+                    public String apply(Renouvellement d) {
+                        return Dates.formatDate(d.getDateEcheance());
                     }
                 })
                 .join(on("<br/>"));
