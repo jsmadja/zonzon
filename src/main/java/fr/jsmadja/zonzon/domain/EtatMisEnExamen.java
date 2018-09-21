@@ -19,7 +19,7 @@ public class EtatMisEnExamen {
     private final LocalDate dateMandatDepotInitiale;
     private final LocalDate dateDerniereGestionAlerte;
     private final LocalDate referenceDate;
-    private final List<Renouvellement> renouvellements;
+    private final Renouvellements renouvellements = new Renouvellements();
 
     EtatMisEnExamen(String dossier, String nom, Nature nature, LocalDate dateMandatDepotInitiale, LocalDate dateDerniereGestionAlerte, LocalDate referenceDate) {
         if (referenceDate == null) {
@@ -31,7 +31,7 @@ public class EtatMisEnExamen {
         this.dateMandatDepotInitiale = dateMandatDepotInitiale;
         this.dateDerniereGestionAlerte = dateDerniereGestionAlerte;
         this.referenceDate = referenceDate;
-        this.renouvellements = this.calculeRenouvellements();
+        this.calculeRenouvellements();
     }
 
     public int getNombreProlongations() {
@@ -44,7 +44,7 @@ public class EtatMisEnExamen {
     }
 
     public LocalDate getDateEcheanceMD() {
-        return this.renouvellements.get(this.renouvellements.size() - 1).getDateEcheance();
+        return this.renouvellements.last().getDateEcheance();
     }
 
     int getDelaiAvantEcheanceMandatDepot() {
@@ -58,28 +58,26 @@ public class EtatMisEnExamen {
         return this.renouvellements.get(this.renouvellements.size() - 2).getDateEcheance();
     }
 
-    private List<Renouvellement> calculeRenouvellements() {
-        List<Renouvellement> renouvellements = Lists.newArrayList();
-        LocalDate dateProchaineEcheance = calculeDateProlongationInitiale(this, this.dateMandatDepotInitiale);
+    private void calculeRenouvellements() {
+        LocalDate dateProchaineEcheance = calculeDateProlongationInitiale(this.dateMandatDepotInitiale);
         Renouvellement renouvellement = new Renouvellement(dateProchaineEcheance, this.nature, true);
         renouvellements.add(renouvellement);
         while (renouvellement.aEteTraite(this.dateDerniereGestionAlerte)) {
-            dateProchaineEcheance = calculeDateProlongation(this, dateProchaineEcheance);
+            dateProchaineEcheance = calculeDateProlongation(dateProchaineEcheance);
             renouvellement = new Renouvellement(dateProchaineEcheance, this.nature, false);
             renouvellements.add(renouvellement);
         }
-        return renouvellements;
     }
 
-    public List<Renouvellement> getRenouvellements() {
+    public Renouvellements getRenouvellements() {
         return this.renouvellements;
     }
 
-    private LocalDate calculeDateProlongationInitiale(EtatMisEnExamen etat, LocalDate dateProchaineEcheance) {
+    private LocalDate calculeDateProlongationInitiale(LocalDate dateProchaineEcheance) {
         return new LocalDate(dateProchaineEcheance).plusMonths(this.nature.getDelaiProlongationInitiale());
     }
 
-    private LocalDate calculeDateProlongation(EtatMisEnExamen etat, LocalDate dateProchaineEcheance) {
+    private LocalDate calculeDateProlongation(LocalDate dateProchaineEcheance) {
         return dateProchaineEcheance.plusMonths(this.nature.getDelaiProlongation());
     }
 
